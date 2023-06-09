@@ -1,8 +1,8 @@
 import textwrap
 
 
-def menu():
-    menu = """\n
+def inicio():
+    inicio = """\n
     ================ MENU ================
     [d]\tDepositar
     [s]\tSacar
@@ -13,10 +13,10 @@ def menu():
     [q]\tSair
     ======================================
     Insira sua opção aqui => """
-    return input(textwrap.dedent(menu))
+    return input(textwrap.dedent(inicio))
 
 
-def depositar(saldo, valor, extrato, /):
+def deposito(saldo, valor, extrato, /):
     if valor > 0:
         saldo += valor
         extrato += f"Depósito:\tR$ {valor:.2f}\n"
@@ -27,13 +27,13 @@ def depositar(saldo, valor, extrato, /):
     return saldo, extrato
 
 
-def sacar(*, saldo, valor, extrato, limite, numero_saques, limite_saques):
+def saque(*, saldo, valor, extrato, limite, numero_saques, limite_saques):
     excedeu_saldo = valor > saldo
     excedeu_limite = valor > limite
     excedeu_saques = numero_saques >= limite_saques
 
     if excedeu_saldo:
-        print("\n>>> Operação falhou! Você não tem saldo suficiente. <<<")
+        print("\n>>> Operação falhou! Sem saldo suficiente. <<<")
 
     elif excedeu_limite:
         print("\n>>> Operação falhou! O valor do saque excede o limite. <<<")
@@ -55,7 +55,7 @@ def sacar(*, saldo, valor, extrato, limite, numero_saques, limite_saques):
 
 def exibir_extrato(saldo, /, *, extrato):
     print("\n================ EXTRATO ================")
-    print("Não foram realizadas movimentações." if not extrato else extrato)
+    print("Sem movimentações no período." if not extrato else extrato)
     print(f"\nSaldo:\t\tR$ {saldo:.2f}")
     print("==========================================")
 
@@ -116,17 +116,17 @@ def main():
     contas = []
 
     while True:
-        opcao = menu()
+        opcao = inicio()
 
         if opcao == "d":
             valor = float(input("Informe o valor do depósito: "))
 
-            saldo, extrato = depositar(saldo, valor, extrato)
+            saldo, extrato = deposito(saldo, valor, extrato)
 
         elif opcao == "s":
             valor = float(input("Informe o valor do saque: "))
 
-            saldo, extrato = sacar(
+            saldo, extrato = saque(
                 saldo=saldo,
                 valor=valor,
                 extrato=extrato,
